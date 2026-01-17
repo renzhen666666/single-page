@@ -83,6 +83,9 @@ class renderTemplateError(Exception):
 
             case "2script":
                 super().__init__("页面只能包含一个 <script> 标签!!!!!")
+
+            case "routeError":
+                super().__init__("路由参数设置错误!!!!!")
         
             case _:
                 super().__init__(f"{e}? 哪个傻逼在这乱传参数?!!")

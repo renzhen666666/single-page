@@ -38,3 +38,4 @@ for thread in thread_list:
 
 
 print(f"压缩完成，耗时{time.time() - start_time}秒")
+print(f"时间{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(start_time))}")

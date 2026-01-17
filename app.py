@@ -63,6 +63,8 @@ def setup_logging():
 
 from tool import *
 
+from route import routes
+
 
 
 pages = contextCache(logger=app.logger.warning, debug=True)
@@ -99,6 +101,24 @@ def main(url):
 def pagesapi(url):
     try:
         if url[0] == '/': url = url[1:]
+
+        """        
+        for pattern, route_config in routes.items():
+            match = re.match(pattern, url)
+            if match:
+                try:
+                    url = route_config['template']['path']
+
+
+
+                except Exception as e:
+                    raise renderTemplateError(f"routeError:{e}")
+        """
+
+
+                
+
+
 
         pages_path = Path(app.config['pagesDataPath'])
         requested_path = (pages_path / url).resolve()
