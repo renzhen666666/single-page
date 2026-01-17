@@ -1,0 +1,37 @@
+<div class="text-center">
+    <h1>Test Page</h1>
+    <a href="/home">home</a>
+    <a href="/p1">p1</a>
+    <a href="/p2">p2</a>
+    <a href="/p3">p3</a>
+    <div class="card" >
+        <div class="card-header">
+            <button data-on-click="btnClick" data-click-params="[123456]">测试</button>
+        </div>
+        <div class="card-body">
+            <form>
+                <input type="text" name="username" placeholder="请输入用户名"
+                 data-on-input="inputChange" 
+                 data-input-params='["event", "this"]'>
+                <input type="password" name="password" placeholder="请输入密码">
+                <button action="none" type="submit">登录</button>
+            </form>
+            
+        </div>
+    </div>
+</div>
+
+<div class="card" >
+    <div class="card-header">
+        <button data-on-click="btnClick" data-click-params="[123456]">测试</button>
+    </div>
+    <div class="card-body" id="test-card-container" data-derive-container>
+        <a href="/test/card1" data-load="derive">card1</a>
+        <a href="/test/card2" data-load="derive">card2</a>
+    </div>
+</div>
+
+
+<script>
+    console.log("通过script标签加载");
+</script>
