@@ -157,7 +157,7 @@ function loadScript(scriptContent) {
 }
 
 
-function loadStyles(href) { 
+function loadStylesFromHref(href) { 
     return new Promise((resolve, reject) => {
         // 防止重复加载相同 CSS
         if (document.querySelector(`link[href="${href}"]`)) {
@@ -178,6 +178,21 @@ function loadStyles(href) {
         
         document.head.appendChild(link);
     });
+}
+
+function loadStyles(text) { 
+    return new Promise((resolve, reject) => {
+    
+        const style = document.createElement('style');
+        style.textContent = text;
+        style.onload = () => {
+            resolve(style);
+        };
+
+        style.setAttribute('data-loaded-from', window.location.pathname);
+        style.onerror = () => reject(new Error(`Failed to load CSS: ${text}`))
+    
+    })
 }
 
 
@@ -286,7 +301,7 @@ async function loadPage(loadContainerId = 'app', url=window.location.pathname) {
         }
 
         if(data?.config?.styles) {
-            const stylesPromises = data.config.styles.map(cssFilename => loadStyles(`/css/${cssFilename}`));
+            const stylesPromises = data.config.styles.map(cssFilename => loadStylesFromHref(`/css/${cssFilename}`));
             await Promise.all(stylesPromises);
         }
 
@@ -305,6 +320,10 @@ async function loadPage(loadContainerId = 'app', url=window.location.pathname) {
 
         if(_data.scripts) {
             _data.scripts.forEach(script => loadScript(script));
+        }
+
+        if(_data.styles) {
+            _data.styles.forEach(style => loadStyles(style));
         }
 
 
@@ -335,6 +354,8 @@ function renderHtml(html) {
     let config = {};
     const scripts = [...html.matchAll(/<script>(.*?)<\/script>/gs)].map(scriptMatch => scriptMatch[1].replace(/\n/g, ''))
 
+    const styles = [...html.matchAll(/<style>(.*?)<\/style>/gs)].map(styleMatch => styleMatch[1]);
+
     html = html.replace(/<script>(.*?)<\/script>/gs, '');
 
     const configs = html.matchAll(/\{(\w+)\}(.*?)\{\/\1\}/gs);
@@ -363,6 +384,7 @@ function renderHtml(html) {
         html: html,
         config: config,
         scripts: scripts,
+        styles: styles
     };
 }
 
@@ -516,7 +538,21 @@ function renderTemplate(content, data = {}) {
         if (data.data?.page) {
             return {'page': data.data.page}
         } else {
-            return {'page': `<div class="alert alert-danger" role="alert">出现问题， 请稍后再试</div>`}
+            switch (response.status) {
+                case 404:
+                    return {'page': `<div class="alert alert-danger" role="alert">404 页面不存在</div>`}
+                case 500:
+                        return {'page': `<div class="alert alert-danger" role="alert">500 服务器错误</div>`}
+                case 401:
+                    return {'page': `<div class="alert alert-danger" role="alert">401 未授权</div>`}
+
+
+                default:
+                    return {'page': `<div class="alert alert-danger" role="alert">${data.error || '我们也不知道出了什么问题，你就先受着吧(doge)'}</div>`}
+            }
+
+
+            
         }
     }
     return data.data;
