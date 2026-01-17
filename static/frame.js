@@ -241,38 +241,38 @@ async function loadPage(loadContainerId = 'app', url=window.location.pathname) {
         const response = await fetch(`/api/pages${path}`, { method: 'POST' });
         const data = await processResponse(response);
 
-        if(data.config.loadData) {
-            switch (data.config.loadData.method) {
-                case 'derive':
-                    const superU = data.config.loadData.super;
-                    if(oldPath.startsWith(superU) && oldPath !== path) {
-                        break;
-                    }/* else if(data.config.loadData.loadSuper) {
-                        await loadPage(loadContainerId, superU);
-                        break;
-                    } */else{
-                        await loadPage('app', superU);
-                        await loadPage(data.config.loadData.deriveContainer, path);
-                        return;
-                    }
+        console.log(`${path} data:`, data);
 
-
-
-
+        switch (data?.config?.loadData?.method) {
+            case 'derive':
+                const superU = data.config.loadData.super;
+                if(oldPath.startsWith(superU) && oldPath !== path) {
                     break;
-                default:
+                }/* else if(data.config.loadData.loadSuper) {
+                    await loadPage(loadContainerId, superU);
                     break;
-            }
+                } */else{
+                    await loadPage('app', superU);
+                    await loadPage(data.config.loadData.deriveContainer, path);
+                    return;
+                }
+
+
+
+
+                break;
+            default:
+                break;
         }
 
-        console.log(`${path} data:`, data);
+    
 
         var methodsMap = defaultMethods;
         
         
         let initFuncLst = [];
 
-        if (data.config.scripts) {
+        if (data?.config?.scripts) {
             // 等待所有异步加载完成 ！！！！！
             const methodsPromises = data.config.scripts.map(scriptSrc => loadScriptFromSrc(scriptSrc));
 
@@ -285,7 +285,7 @@ async function loadPage(loadContainerId = 'app', url=window.location.pathname) {
             });
         }
 
-        if(data.config.styles) {
+        if(data?.config?.styles) {
             const stylesPromises = data.config.styles.map(cssFilename => loadStyles(`/css/${cssFilename}`));
             await Promise.all(stylesPromises);
         }
@@ -293,8 +293,8 @@ async function loadPage(loadContainerId = 'app', url=window.location.pathname) {
         const _data = renderHtml(data.page);
 
         let config = _data.config;
-        config.nav = data.config.nav || {};
-        config.menu = data.config.menu || {};
+        config.nav = data?.config?.nav || {};
+        config.menu = data?.config?.menu || {};
 
         console.log('htmlScript:', _data.scripts);
         console.log('rederConfig:', config);
@@ -512,9 +512,9 @@ function renderTemplate(content, data = {}) {
  async function processResponse(response) {
     const data = await response.json();
     if (!data.success) {
-        console.error('API返回错误:', data.error || '未知错误');
+        console.warn('API返回错误:', data.error || '未知错误');
         if (data.data?.page) {
-            return data.data
+            return {'page': data.data.page}
         } else {
             return {'page': `<div class="alert alert-danger" role="alert">出现问题， 请稍后再试</div>`}
         }
