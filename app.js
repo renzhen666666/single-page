@@ -9,6 +9,8 @@ const tool = require('./tool');
 const app = express();
 app.use(express.json());
 
+require('dotenv').config({ path: './.env' });
+
 const pagesDataPath = path.join(__dirname, 'pages');
 
 // Winston logging setup
@@ -16,6 +18,7 @@ const logDir = path.join(__dirname, 'logs');
 if (!fs.existsSync(logDir)) {
     fs.mkdirSync(logDir, { recursive: true });
 }
+
 
 const serverConfig = require('./server-config');
 
