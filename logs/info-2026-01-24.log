@@ -18,3 +18,203 @@
 [beijing2026/01/24 16:43:25] info: Server started at 2026/1/24 16:43:25
 [sh 2026/01/24 16:44:30 UTC 2026-01-24T08:44:30.775Z] info: ---------------------------------------------------
 [sh 2026/01/24 16:44:30 UTC 2026-01-24T08:44:30.789Z] info: Server started at 2026/1/24 16:44:30
+[SH 2026/01/24 22:22:55 UTC 2026-01-24T14:22:55.503Z] info: ---------------------------------------------------
+[SH 2026/01/24 22:22:55 UTC 2026-01-24T14:22:55.519Z] info: Server started at 2026/1/24 22:22:55
+[SH 2026/01/24 22:23:10 UTC 2026-01-24T14:23:10.389Z] info: GET /
+[SH 2026/01/24 22:23:10 UTC 2026-01-24T14:23:10.452Z] info: GET /css/bootstrap.min.css
+[SH 2026/01/24 22:23:10 UTC 2026-01-24T14:23:10.456Z] info: GET /css/aos.css
+[SH 2026/01/24 22:23:10 UTC 2026-01-24T14:23:10.457Z] info: GET /js/bootstrap.bundle.min.js
+[SH 2026/01/24 22:23:10 UTC 2026-01-24T14:23:10.468Z] info: GET /css/main_style.css
+[SH 2026/01/24 22:23:10 UTC 2026-01-24T14:23:10.469Z] info: GET /js/aos.js
+[SH 2026/01/24 22:23:10 UTC 2026-01-24T14:23:10.480Z] info: GET /config.js
+[SH 2026/01/24 22:23:10 UTC 2026-01-24T14:23:10.482Z] info: GET /frame.js
+[SH 2026/01/24 22:23:10 UTC 2026-01-24T14:23:10.519Z] info: GET /home
+[SH 2026/01/24 22:23:10 UTC 2026-01-24T14:23:10.520Z] info: POST /api/pages/
+[SH 2026/01/24 22:23:10 UTC 2026-01-24T14:23:10.521Z] error: Error: TypeError: logger.warning is not a function
+[SH 2026/01/24 22:23:10 UTC 2026-01-24T14:23:10.580Z] info: GET /css/bootstrap.min.css
+[SH 2026/01/24 22:23:10 UTC 2026-01-24T14:23:10.582Z] info: GET /css/aos.css
+[SH 2026/01/24 22:23:10 UTC 2026-01-24T14:23:10.584Z] info: GET /css/main_style.css
+[SH 2026/01/24 22:23:10 UTC 2026-01-24T14:23:10.586Z] info: GET /js/bootstrap.bundle.min.js
+[SH 2026/01/24 22:23:10 UTC 2026-01-24T14:23:10.588Z] info: GET /js/aos.js
+[SH 2026/01/24 22:23:10 UTC 2026-01-24T14:23:10.591Z] info: GET /config.js
+[SH 2026/01/24 22:23:10 UTC 2026-01-24T14:23:10.592Z] info: GET /frame.js
+[SH 2026/01/24 22:23:10 UTC 2026-01-24T14:23:10.622Z] info: POST /api/pages/home
+[SH 2026/01/24 22:23:10 UTC 2026-01-24T14:23:10.623Z] error: Error: TypeError: tool.renderTemplate is not a function
+[SH 2026/01/24 22:23:10 UTC 2026-01-24T14:23:10.746Z] info: POST /api/navigation
+[SH 2026/01/24 22:23:10 UTC 2026-01-24T14:23:10.795Z] info: GET /img/menu.png
+[SH 2026/01/24 22:23:10 UTC 2026-01-24T14:23:10.795Z] info: GET /img/menu-fold.png
+[SH 2026/01/24 22:24:59 UTC 2026-01-24T14:24:59.715Z] info: GET /home
+[SH 2026/01/24 22:24:59 UTC 2026-01-24T14:24:59.764Z] info: GET /css/bootstrap.min.css
+[SH 2026/01/24 22:24:59 UTC 2026-01-24T14:24:59.771Z] info: GET /css/aos.css
+[SH 2026/01/24 22:24:59 UTC 2026-01-24T14:24:59.773Z] info: GET /js/bootstrap.bundle.min.js
+[SH 2026/01/24 22:24:59 UTC 2026-01-24T14:24:59.774Z] info: GET /css/main_style.css
+[SH 2026/01/24 22:24:59 UTC 2026-01-24T14:24:59.776Z] info: GET /js/aos.js
+[SH 2026/01/24 22:24:59 UTC 2026-01-24T14:24:59.776Z] info: GET /config.js
+[SH 2026/01/24 22:24:59 UTC 2026-01-24T14:24:59.777Z] info: GET /frame.js
+[SH 2026/01/24 22:24:59 UTC 2026-01-24T14:24:59.820Z] info: POST /api/pages/home
+[SH 2026/01/24 22:24:59 UTC 2026-01-24T14:24:59.821Z] error: Error: TypeError: tool.renderTemplate is not a function
+[SH 2026/01/24 22:24:59 UTC 2026-01-24T14:24:59.854Z] info: POST /api/navigation
+[SH 2026/01/24 22:24:59 UTC 2026-01-24T14:24:59.889Z] info: GET /img/menu.png
+[SH 2026/01/24 22:24:59 UTC 2026-01-24T14:24:59.889Z] info: GET /img/menu-fold.png
+[SH 2026/01/24 22:25:01 UTC 2026-01-24T14:25:01.923Z] info: GET /home
+[SH 2026/01/24 22:25:01 UTC 2026-01-24T14:25:01.969Z] info: GET /css/bootstrap.min.css
+[SH 2026/01/24 22:25:01 UTC 2026-01-24T14:25:01.970Z] info: GET /css/aos.css
+[SH 2026/01/24 22:25:01 UTC 2026-01-24T14:25:01.970Z] info: GET /js/bootstrap.bundle.min.js
+[SH 2026/01/24 22:25:01 UTC 2026-01-24T14:25:01.972Z] info: GET /js/aos.js
+[SH 2026/01/24 22:25:01 UTC 2026-01-24T14:25:01.973Z] info: GET /css/main_style.css
+[SH 2026/01/24 22:25:01 UTC 2026-01-24T14:25:01.973Z] info: GET /config.js
+[SH 2026/01/24 22:25:01 UTC 2026-01-24T14:25:01.975Z] info: GET /frame.js
+[SH 2026/01/24 22:25:02 UTC 2026-01-24T14:25:02.000Z] info: POST /api/pages/home
+[SH 2026/01/24 22:25:02 UTC 2026-01-24T14:25:02.002Z] error: Error: TypeError: tool.renderTemplate is not a function
+[SH 2026/01/24 22:25:02 UTC 2026-01-24T14:25:02.035Z] info: POST /api/navigation
+[SH 2026/01/24 22:25:02 UTC 2026-01-24T14:25:02.084Z] info: GET /img/menu.png
+[SH 2026/01/24 22:25:02 UTC 2026-01-24T14:25:02.088Z] info: GET /img/menu-fold.png
+[SH 2026/01/24 22:25:03 UTC 2026-01-24T14:25:03.124Z] info: GET /home
+[SH 2026/01/24 22:25:03 UTC 2026-01-24T14:25:03.165Z] info: GET /css/bootstrap.min.css
+[SH 2026/01/24 22:25:03 UTC 2026-01-24T14:25:03.167Z] info: GET /css/aos.css
+[SH 2026/01/24 22:25:03 UTC 2026-01-24T14:25:03.168Z] info: GET /js/bootstrap.bundle.min.js
+[SH 2026/01/24 22:25:03 UTC 2026-01-24T14:25:03.169Z] info: GET /js/aos.js
+[SH 2026/01/24 22:25:03 UTC 2026-01-24T14:25:03.170Z] info: GET /css/main_style.css
+[SH 2026/01/24 22:25:03 UTC 2026-01-24T14:25:03.170Z] info: GET /config.js
+[SH 2026/01/24 22:25:03 UTC 2026-01-24T14:25:03.171Z] info: GET /frame.js
+[SH 2026/01/24 22:25:03 UTC 2026-01-24T14:25:03.193Z] info: POST /api/pages/home
+[SH 2026/01/24 22:25:03 UTC 2026-01-24T14:25:03.194Z] error: Error: TypeError: tool.renderTemplate is not a function
+[SH 2026/01/24 22:25:03 UTC 2026-01-24T14:25:03.216Z] info: POST /api/navigation
+[SH 2026/01/24 22:25:03 UTC 2026-01-24T14:25:03.236Z] info: GET /img/menu.png
+[SH 2026/01/24 22:25:03 UTC 2026-01-24T14:25:03.237Z] info: GET /img/menu-fold.png
+[SH 2026/01/24 22:25:06 UTC 2026-01-24T14:25:06.829Z] info: GET /css/bootstrap.min.css
+[SH 2026/01/24 22:25:06 UTC 2026-01-24T14:25:06.830Z] info: GET /css/aos.css
+[SH 2026/01/24 22:25:06 UTC 2026-01-24T14:25:06.830Z] info: GET /css/main_style.css
+[SH 2026/01/24 22:25:06 UTC 2026-01-24T14:25:06.850Z] info: GET /.well-known/appspecific/com.chrome.devtools.json
+[SH 2026/01/24 22:25:06 UTC 2026-01-24T14:25:06.970Z] info: GET /css/bootstrap.min.css.map
+[SH 2026/01/24 22:25:21 UTC 2026-01-24T14:25:21.577Z] info: ---------------------------------------------------
+[SH 2026/01/24 22:25:21 UTC 2026-01-24T14:25:21.595Z] info: Server started at 2026/1/24 22:25:21
+[SH 2026/01/24 22:25:24 UTC 2026-01-24T14:25:24.969Z] info: GET /
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.025Z] info: GET /.well-known/appspecific/com.chrome.devtools.json
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.039Z] info: GET /css/bootstrap.min.css
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.043Z] info: GET /css/aos.css
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.047Z] info: GET /css/main_style.css
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.048Z] info: GET /js/bootstrap.bundle.min.js
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.052Z] info: GET /js/aos.js
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.056Z] info: GET /config.js
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.059Z] info: GET /frame.js
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.128Z] info: GET /home
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.129Z] info: GET /css/bootstrap.min.css.map
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.137Z] info: POST /api/pages/
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.138Z] error: Error: TypeError: logger.warning is not a function
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.233Z] info: GET /.well-known/appspecific/com.chrome.devtools.json
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.256Z] info: GET /css/bootstrap.min.css
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.258Z] info: GET /css/aos.css
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.259Z] info: GET /js/bootstrap.bundle.min.js
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.262Z] info: GET /css/main_style.css
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.263Z] info: GET /js/aos.js
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.264Z] info: GET /config.js
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.267Z] info: GET /frame.js
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.311Z] info: GET /css/bootstrap.min.css.map
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.319Z] info: POST /api/pages/home
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.321Z] error: Error: TypeError: tool.renderTemplate is not a function
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.439Z] info: POST /api/navigation
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.499Z] info: GET /img/menu.png
+[SH 2026/01/24 22:25:25 UTC 2026-01-24T14:25:25.500Z] info: GET /img/menu-fold.png
+[SH 2026/01/24 22:26:57 UTC 2026-01-24T14:26:57.365Z] info: GET /home
+[SH 2026/01/24 22:26:57 UTC 2026-01-24T14:26:57.399Z] info: GET /.well-known/appspecific/com.chrome.devtools.json
+[SH 2026/01/24 22:26:57 UTC 2026-01-24T14:26:57.408Z] info: GET /css/bootstrap.min.css
+[SH 2026/01/24 22:26:57 UTC 2026-01-24T14:26:57.411Z] info: GET /css/aos.css
+[SH 2026/01/24 22:26:57 UTC 2026-01-24T14:26:57.417Z] info: GET /css/main_style.css
+[SH 2026/01/24 22:26:57 UTC 2026-01-24T14:26:57.419Z] info: GET /js/bootstrap.bundle.min.js
+[SH 2026/01/24 22:26:57 UTC 2026-01-24T14:26:57.424Z] info: GET /js/aos.js
+[SH 2026/01/24 22:26:57 UTC 2026-01-24T14:26:57.425Z] info: GET /config.js
+[SH 2026/01/24 22:26:57 UTC 2026-01-24T14:26:57.430Z] info: GET /frame.js
+[SH 2026/01/24 22:26:57 UTC 2026-01-24T14:26:57.466Z] info: POST /api/pages/home
+[SH 2026/01/24 22:26:57 UTC 2026-01-24T14:26:57.468Z] error: Error: TypeError: tool.renderTemplate is not a function
+[SH 2026/01/24 22:26:57 UTC 2026-01-24T14:26:57.471Z] info: GET /css/bootstrap.min.css.map
+[SH 2026/01/24 22:26:57 UTC 2026-01-24T14:26:57.600Z] info: POST /api/navigation
+[SH 2026/01/24 22:26:57 UTC 2026-01-24T14:26:57.655Z] info: GET /img/menu.png
+[SH 2026/01/24 22:26:57 UTC 2026-01-24T14:26:57.656Z] info: GET /img/menu-fold.png
+[SH 2026/01/24 22:27:01 UTC 2026-01-24T14:27:01.707Z] info: ---------------------------------------------------
+[SH 2026/01/24 22:27:01 UTC 2026-01-24T14:27:01.725Z] info: Server started at 2026/1/24 22:27:01
+[SH 2026/01/24 22:27:03 UTC 2026-01-24T14:27:03.780Z] info: GET /home
+[SH 2026/01/24 22:27:03 UTC 2026-01-24T14:27:03.816Z] info: GET /.well-known/appspecific/com.chrome.devtools.json
+[SH 2026/01/24 22:27:03 UTC 2026-01-24T14:27:03.830Z] info: GET /css/bootstrap.min.css
+[SH 2026/01/24 22:27:03 UTC 2026-01-24T14:27:03.833Z] info: GET /css/aos.css
+[SH 2026/01/24 22:27:03 UTC 2026-01-24T14:27:03.838Z] info: GET /css/main_style.css
+[SH 2026/01/24 22:27:03 UTC 2026-01-24T14:27:03.842Z] info: GET /js/bootstrap.bundle.min.js
+[SH 2026/01/24 22:27:03 UTC 2026-01-24T14:27:03.845Z] info: GET /js/aos.js
+[SH 2026/01/24 22:27:03 UTC 2026-01-24T14:27:03.847Z] info: GET /config.js
+[SH 2026/01/24 22:27:03 UTC 2026-01-24T14:27:03.851Z] info: GET /frame.js
+[SH 2026/01/24 22:27:03 UTC 2026-01-24T14:27:03.878Z] info: POST /api/pages/home
+[SH 2026/01/24 22:27:03 UTC 2026-01-24T14:27:03.880Z] error: Error: TypeError: tool.renderTemplate is not a function
+[SH 2026/01/24 22:27:03 UTC 2026-01-24T14:27:03.886Z] info: GET /css/bootstrap.min.css.map
+[SH 2026/01/24 22:27:04 UTC 2026-01-24T14:27:04.015Z] info: POST /api/navigation
+[SH 2026/01/24 22:27:04 UTC 2026-01-24T14:27:04.067Z] info: GET /img/menu.png
+[SH 2026/01/24 22:27:04 UTC 2026-01-24T14:27:04.069Z] info: GET /img/menu-fold.png
+[SH 2026/01/24 22:27:26 UTC 2026-01-24T14:27:26.879Z] info: ---------------------------------------------------
+[SH 2026/01/24 22:27:26 UTC 2026-01-24T14:27:26.896Z] info: Server started at 2026/1/24 22:27:26
+[SH 2026/01/24 22:27:29 UTC 2026-01-24T14:27:29.376Z] info: GET /home
+[SH 2026/01/24 22:27:29 UTC 2026-01-24T14:27:29.413Z] info: GET /.well-known/appspecific/com.chrome.devtools.json
+[SH 2026/01/24 22:27:29 UTC 2026-01-24T14:27:29.427Z] info: GET /css/bootstrap.min.css
+[SH 2026/01/24 22:27:29 UTC 2026-01-24T14:27:29.430Z] info: GET /css/aos.css
+[SH 2026/01/24 22:27:29 UTC 2026-01-24T14:27:29.434Z] info: GET /css/main_style.css
+[SH 2026/01/24 22:27:29 UTC 2026-01-24T14:27:29.436Z] info: GET /js/bootstrap.bundle.min.js
+[SH 2026/01/24 22:27:29 UTC 2026-01-24T14:27:29.440Z] info: GET /js/aos.js
+[SH 2026/01/24 22:27:29 UTC 2026-01-24T14:27:29.442Z] info: GET /config.js
+[SH 2026/01/24 22:27:29 UTC 2026-01-24T14:27:29.445Z] info: GET /frame.js
+[SH 2026/01/24 22:27:29 UTC 2026-01-24T14:27:29.475Z] info: POST /api/pages/home
+[SH 2026/01/24 22:27:29 UTC 2026-01-24T14:27:29.479Z] info: GET /css/bootstrap.min.css.map
+[SH 2026/01/24 22:27:29 UTC 2026-01-24T14:27:29.609Z] info: POST /api/navigation
+[SH 2026/01/24 22:27:29 UTC 2026-01-24T14:27:29.678Z] info: GET /img/menu.png
+[SH 2026/01/24 22:27:29 UTC 2026-01-24T14:27:29.679Z] info: GET /img/menu-fold.png
+[SH 2026/01/24 22:27:32 UTC 2026-01-24T14:27:32.093Z] info: POST /api/pages/p3
+[SH 2026/01/24 22:27:32 UTC 2026-01-24T14:27:32.126Z] info: GET /img/menu.png
+[SH 2026/01/24 22:27:32 UTC 2026-01-24T14:27:32.129Z] info: GET /img/menu-fold.png
+[SH 2026/01/24 22:27:33 UTC 2026-01-24T14:27:33.354Z] info: POST /api/pages/home
+[SH 2026/01/24 22:27:33 UTC 2026-01-24T14:27:33.372Z] info: GET /img/menu.png
+[SH 2026/01/24 22:27:33 UTC 2026-01-24T14:27:33.374Z] info: GET /img/menu-fold.png
+[SH 2026/01/24 22:27:37 UTC 2026-01-24T14:27:37.031Z] info: GET /route
+[SH 2026/01/24 22:27:37 UTC 2026-01-24T14:27:37.091Z] info: GET /.well-known/appspecific/com.chrome.devtools.json
+[SH 2026/01/24 22:27:37 UTC 2026-01-24T14:27:37.139Z] info: GET /css/bootstrap.min.css
+[SH 2026/01/24 22:27:37 UTC 2026-01-24T14:27:37.141Z] info: GET /css/aos.css
+[SH 2026/01/24 22:27:37 UTC 2026-01-24T14:27:37.143Z] info: GET /js/bootstrap.bundle.min.js
+[SH 2026/01/24 22:27:37 UTC 2026-01-24T14:27:37.144Z] info: GET /css/main_style.css
+[SH 2026/01/24 22:27:37 UTC 2026-01-24T14:27:37.145Z] info: GET /js/aos.js
+[SH 2026/01/24 22:27:37 UTC 2026-01-24T14:27:37.145Z] info: GET /config.js
+[SH 2026/01/24 22:27:37 UTC 2026-01-24T14:27:37.147Z] info: GET /frame.js
+[SH 2026/01/24 22:27:37 UTC 2026-01-24T14:27:37.192Z] info: GET /css/bootstrap.min.css.map
+[SH 2026/01/24 22:27:37 UTC 2026-01-24T14:27:37.194Z] info: POST /api/pages/route
+[SH 2026/01/24 22:27:37 UTC 2026-01-24T14:27:37.308Z] info: POST /api/navigation
+[SH 2026/01/24 22:27:37 UTC 2026-01-24T14:27:37.356Z] info: GET /img/menu.png
+[SH 2026/01/24 22:27:37 UTC 2026-01-24T14:27:37.357Z] info: GET /img/menu-fold.png
+[SH 2026/01/24 22:27:44 UTC 2026-01-24T14:27:44.747Z] info: GET /route/231444
+[SH 2026/01/24 22:27:44 UTC 2026-01-24T14:27:44.799Z] info: GET /.well-known/appspecific/com.chrome.devtools.json
+[SH 2026/01/24 22:27:44 UTC 2026-01-24T14:27:44.811Z] info: GET /css/bootstrap.min.css
+[SH 2026/01/24 22:27:44 UTC 2026-01-24T14:27:44.815Z] info: GET /css/aos.css
+[SH 2026/01/24 22:27:44 UTC 2026-01-24T14:27:44.818Z] info: GET /js/bootstrap.bundle.min.js
+[SH 2026/01/24 22:27:44 UTC 2026-01-24T14:27:44.819Z] info: GET /css/main_style.css
+[SH 2026/01/24 22:27:44 UTC 2026-01-24T14:27:44.822Z] info: GET /js/aos.js
+[SH 2026/01/24 22:27:44 UTC 2026-01-24T14:27:44.825Z] info: GET /config.js
+[SH 2026/01/24 22:27:44 UTC 2026-01-24T14:27:44.827Z] info: GET /frame.js
+[SH 2026/01/24 22:27:44 UTC 2026-01-24T14:27:44.863Z] info: POST /api/pages/route/231444
+[SH 2026/01/24 22:27:44 UTC 2026-01-24T14:27:44.864Z] warn: File F:\code\single-page-frame\pages\route\route_231444.html not found. 没有找到F:\code\single-page-frame\pages\route\route_231444.html
+[SH 2026/01/24 22:27:44 UTC 2026-01-24T14:27:44.865Z] warn: File F:\code\single-page-frame\pages\route\route_231444.json not found. 没有找到F:\code\single-page-frame\pages\route\route_231444.json
+[SH 2026/01/24 22:27:44 UTC 2026-01-24T14:27:44.866Z] info: GET /css/bootstrap.min.css.map
+[SH 2026/01/24 22:27:44 UTC 2026-01-24T14:27:44.967Z] info: POST /api/navigation
+[SH 2026/01/24 22:27:45 UTC 2026-01-24T14:27:45.015Z] info: GET /img/menu.png
+[SH 2026/01/24 22:27:45 UTC 2026-01-24T14:27:45.016Z] info: GET /img/menu-fold.png
+[SH 2026/01/24 22:40:11 UTC 2026-01-24T14:40:11.120Z] info: ---------------------------------------------------
+[SH 2026/01/24 22:40:11 UTC 2026-01-24T14:40:11.137Z] info: Server started at 2026/1/24 22:40:11
+[SH 2026/01/24 22:40:13 UTC 2026-01-24T14:40:13.858Z] info: GET /route/231444
+[SH 2026/01/24 22:40:13 UTC 2026-01-24T14:40:13.896Z] info: GET /.well-known/appspecific/com.chrome.devtools.json
+[SH 2026/01/24 22:40:13 UTC 2026-01-24T14:40:13.916Z] info: GET /css/bootstrap.min.css
+[SH 2026/01/24 22:40:13 UTC 2026-01-24T14:40:13.925Z] info: GET /css/aos.css
+[SH 2026/01/24 22:40:13 UTC 2026-01-24T14:40:13.929Z] info: GET /css/main_style.css
+[SH 2026/01/24 22:40:13 UTC 2026-01-24T14:40:13.931Z] info: GET /js/bootstrap.bundle.min.js
+[SH 2026/01/24 22:40:13 UTC 2026-01-24T14:40:13.940Z] info: GET /js/aos.js
+[SH 2026/01/24 22:40:13 UTC 2026-01-24T14:40:13.942Z] info: GET /config.js
+[SH 2026/01/24 22:40:13 UTC 2026-01-24T14:40:13.948Z] info: GET /frame.js
+[SH 2026/01/24 22:40:13 UTC 2026-01-24T14:40:13.997Z] info: GET /css/bootstrap.min.css.map
+[SH 2026/01/24 22:40:14 UTC 2026-01-24T14:40:14.007Z] info: POST /api/pages/route/231444
+[SH 2026/01/24 22:40:14 UTC 2026-01-24T14:40:14.009Z] warn: File F:\code\single-page-frame\pages\route\_route.html not found. 没有找到F:\code\single-page-frame\pages\route\_route.html
+[SH 2026/01/24 22:40:14 UTC 2026-01-24T14:40:14.010Z] warn: File F:\code\single-page-frame\pages\route\_route.json not found. 没有找到F:\code\single-page-frame\pages\route\_route.json
+[SH 2026/01/24 22:40:14 UTC 2026-01-24T14:40:14.138Z] info: POST /api/navigation
+[SH 2026/01/24 22:40:14 UTC 2026-01-24T14:40:14.203Z] info: GET /img/menu.png
+[SH 2026/01/24 22:40:14 UTC 2026-01-24T14:40:14.205Z] info: GET /img/menu-fold.png

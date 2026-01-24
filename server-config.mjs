@@ -1,5 +1,11 @@
-const fs = require('fs');
-const path = require('path');
+import path from 'path';
+import fs from 'fs';
+
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 class ServerConfig {
     constructor() {
@@ -40,4 +46,4 @@ class ServerConfig {
     }
 }
 
-module.exports = new ServerConfig();
+export default new ServerConfig();

@@ -1,20 +1,22 @@
 {
-  "name": "single-page-frame",
-  "version": "1.0.0",
-  "description": "Single page frame application",
-  "main": "app.js",
-  "scripts": {
-    "start": "node app.js",
-    "dev": "node app.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "express": "^4.18.2",
-    "winston": "^3.11.0",
-    "winston-daily-rotate-file": "^4.7.1",
-    "http-proxy-middleware": "^2.0.6",
-    "dote": "1.1.0"
-  }
+    "name": "single-page-frame",
+    "version": "1.0.0",
+    "description": "Single page frame application",
+    "main": "app.mjs",
+    "scripts": {
+        "start": "node app.mjs",
+        "dev": "node app.mjs"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "dote": "1.1.0",
+        "dotenv": "^17.2.3",
+        "express": "^4.22.1",
+        "http-proxy-middleware": "^2.0.9",
+        "winston": "^3.19.0",
+        "winston-daily-rotate-file": "^4.7.1"
+    },
+    "type": "module"
 }

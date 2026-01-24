@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+import path from 'path';
+import fs from 'fs';
 
 class ObservableDict extends Object {
     constructor(data, callback) {
@@ -170,7 +170,11 @@ class contextCache {
                 const data = JSON.parse(content);
                 this.cache[pathStr] = data;
                 return { success: true, data: data };
-            } else {
+            }/*else if(_is_page_html_file(filePath)) {
+                const htmlContent = fs.readFileSync(filePath, 'utf-8');
+                this.cache[pathStr] = htmlContent;
+                return { success: true, data: htmlContent };
+            }*/else {
                 const htmlContent = fs.readFileSync(filePath, 'utf-8');
                 this.cache[pathStr] = htmlContent;
                 return { success: true, data: htmlContent };
@@ -199,6 +203,27 @@ class contextCache {
         const pathStr = String(filePath);
         return pathStr.includes('pages') && !pathStr.includes('templates') && pathStr.endsWith('.html');
     }
+}
+
+function countOccurrences(str, substring) {
+    return str.split(substring).length - 1;
+}
+
+function renderTemplate(html, pageParamsMap, logger = null) { 
+    const matches = [...html.matchAll(/\{(\w+)\}(.*?)\{\/\1\}/gs)];
+    matches.forEach(element => {
+        const [_, paramName, paramValue] = element;
+        if(paramName in pageParamsMap) {
+            if(countOccurrences(html, element[0]) > 1) {
+                if(logger) logger(`页面参数 ${paramName} 重复`);
+                return html;
+            }
+            html = html.replace(element[0], pageParamsMap[paramName]);
+        } else {
+            html = html.replace(element[0], paramValue);
+        }
+    });
+    return html;
 }
 
 function createPage(url, title = 'New Page') {
@@ -234,12 +259,13 @@ function createPage(url, title = 'New Page') {
     console.log(`创建成功，目录：${dirPath}`);
 }
 
-module.exports = {
+export default {
     ObservableDict,
     FileLoaderDict,
     FileLoader,
     renderTemplateError,
     extract_scripts_from_html,
     contextCache,
-    createPage
+    createPage,
+    renderTemplate
 };
