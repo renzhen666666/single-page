@@ -1,6 +1,6 @@
 # 单页应用前端框架 (Single Page Frame)
 
-一个简洁、灵活的单页应用 (SPA) 前端框架，基于 Flask 后端和 JavaScript 前端实现。该框架提供了一个完整的单页应用解决方案，支持动态页面加载、主题切换、导航菜单等功能。
+一个简洁、灵活的单页应用 (SPA) 前端框架，基于 JavaScript 实现。该框架提供了一个完整的单页应用解决方案，支持动态页面加载、主题切换、导航菜单等功能。
 
 ## 功能特性
 
@@ -18,8 +18,8 @@
 
 ```
 single-page-frame/
-├── app.py                 # Flask 应用主文件
-├── tool.py                # 工具类和缓存功能
+├── app.js                 # 应用主文件
+├── tool.js                # 工具类和缓存功能
 ├── createPage.py          # 页面创建工具
 ├── zip.py                 # 压缩功能
 ├── index.html             # 主页面模板
@@ -38,24 +38,18 @@ single-page-frame/
 
 ## 安装和启动
 
-### 依赖要求
-
-- Python 3.6+
-- Flask
-- 其他 Python 标准库组件
 
 ### 安装步骤
 
 1. 克隆或下载项目文件
-2. 安装 Python 依赖：
+2. 安装依赖：
    ```bash
-   pip install flask
+   npm install
    ```
 3. 启动应用：
    ```bash
-   python app.py
+   npm start
    ```
-4. 在浏览器中访问 `http://localhost:5000`
 
 ## 使用方法
 
@@ -63,18 +57,10 @@ single-page-frame/
 
 框架支持通过 `createPage.py` 工具创建新页面：
 
-方法一：通过 Python 代码
-```python
-from tool import createPage
-
-# 创建一个新页面
-createPage('/mypage', '我的页面标题')
-```
-
-方法二：通过命令行
 ```bash
 python createPage.py /mypage "我的页面标题"
 ```
+
 
 每个页面包含两个文件：
 - `{page_name}.html` - 页面 HTML 内容
