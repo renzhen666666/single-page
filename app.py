@@ -63,7 +63,6 @@ def setup_logging():
 
 from tool import *
 
-from route import routes
 
 
 
