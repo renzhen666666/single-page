@@ -1,4 +1,5 @@
 const express = require('express');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 const path = require('path');
 const fs = require('fs');
 const winston = require('winston');
@@ -16,12 +17,28 @@ if (!fs.existsSync(logDir)) {
     fs.mkdirSync(logDir, { recursive: true });
 }
 
+const serverConfig = require('./server-config');
+
+
+
 const logger = winston.createLogger({
     level: 'info',
     format: winston.format.combine(
         winston.format.timestamp(),
         winston.format.printf(({ timestamp, level, message }) => {
-            return `[${timestamp}] ${level}: ${message}`;
+            // 使用内置 Intl 转换为北京时间
+            const date = new Date(timestamp);
+            const shTime = date.toLocaleString('zh-CN', { 
+                timeZone: 'Asia/Shanghai',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+            return `[SH ${shTime} UTC ${timestamp}] ${level}: ${message}`;
         })
     ),
     transports: [
@@ -48,6 +65,10 @@ const logger = winston.createLogger({
         })
     ]
 });
+
+logger.info(`---------------------------------------------------`)
+logger.info(`Server started at ${new Date().toLocaleString()}`);
+
 
 const pages = new tool.contextCache((msg) => logger.warning(msg), true);
 
@@ -153,6 +174,36 @@ app.post('/api/navigation', (req, res) => {
             menu: pages.read(path.join(__dirname, 'templates', 'menu.html')).data
         }
     });
+});
+
+app.use('/api', (req, res, next) => {
+    // 检查是否是需要特殊处理的路径
+    if (req.path.startsWith('/api/pages') || req.path === '/api/navigation') {
+        // 如果是已有的 API 路径，跳过代理，继续执行后续路由
+        next();
+    } else {
+        // 否则代理到指定域
+        const proxy = createProxyMiddleware({
+            target: serverConfig.getKey('apiUrl'), // 替换为目标域名
+            changeOrigin: true,
+            pathRewrite: {
+                '^/api': '', // 移除 /api 前缀
+            },
+            onProxyReq: (proxyReq, req, res) => {
+                console.log(`Proxying ${req.method} ${req.url} to ${proxyReq.path}`);
+            },
+            onError: (err, req, res) => {
+                console.error(`Proxy error for ${req.url}:`, err);
+                res.status(500).json({
+                    success: false,
+                    error: 'Proxy error',
+                    data: { page: '500 Proxy Error' }
+                });
+            }
+        });
+        
+        proxy(req, res, next);
+    }
 });
 
 // Request logging middleware
