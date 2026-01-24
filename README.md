@@ -71,13 +71,9 @@ python createPage.py /mypage "我的页面标题"
 页面 HTML 文件支持在 `<script>` 标签中嵌入页面特定的 JavaScript 代码：
 
 ```html
-<div class="text-center">
-    <h1>页面标题</h1>
-    <a href="/home">首页</a>
-    <script>
-        console.log("页面已加载");
-    </script>
-</div>
+<script>
+    console.log("页面已加载");
+</script>
 ```
 
 ### 配置文件

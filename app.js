@@ -184,7 +184,7 @@ app.use('/api', (req, res, next) => {
     } else {
         // 否则代理到指定域
         const proxy = createProxyMiddleware({
-            target: serverConfig.getKey('apiUrl'), // 替换为目标域名
+            target: process.env.BACKEND_URL || 'http://localhost:3000', // 替换为目标域名
             changeOrigin: true,
             pathRewrite: {
                 '^/api': '', // 移除 /api 前缀
