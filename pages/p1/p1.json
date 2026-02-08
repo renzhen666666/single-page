@@ -1,6 +1,8 @@
 {
     "title": "Page 1",
-    "menu": {
-        "p1Active": "active"
+    "siderbar":{
+        "display": true,
+        "template": "menu.html",
+        "page": "p1"
     }
 }

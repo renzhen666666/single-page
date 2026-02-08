@@ -27,9 +27,6 @@ if (!fs.existsSync(logDir)) {
     fs.mkdirSync(logDir, { recursive: true });
 }
 
-
-import serverConfig from './server-config.mjs';
-
 const routesModule = await import('./routes.mjs');
 const routes = routesModule.default;
 
@@ -277,16 +274,18 @@ app.post('/api/pages/*', (req, res) => {
     }
 });
 
-// API: Get navigation
-app.post('/api/navigation', (req, res) => {
-    res.json({
-        success: true,
-        data: {
-            nav: pages.read(path.join(__dirname, 'templates', 'nav.html')).data,
-            menu: pages.read(path.join(__dirname, 'templates', 'menu.html')).data
-        }
-    });
+app.post('/api/template/*', (req, res) => {
+    let template = req.params[0];
+    const data = pages.read(path.join(__dirname, 'templates', template))
+
+    if(data.success) {
+        res.json({ success: true, data: data.data });
+    } else {
+        res.status(404).json({ success: false, error: 'Template not found' });
+    }
+    
 });
+
 
 app.use('/api', (req, res, next) => {
     /*

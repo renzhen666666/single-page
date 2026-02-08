@@ -5,7 +5,10 @@
     "main": "app.mjs",
     "scripts": {
         "start": "node app.mjs",
-        "dev": "node app.mjs"
+        "dev": "node app.mjs",
+        "build": "node build.cjs",
+        "dev:workers": "wrangler pages dev dist",
+        "deploy": "npm run build && wrangler pages deploy dist"
     },
     "keywords": [],
     "author": "",

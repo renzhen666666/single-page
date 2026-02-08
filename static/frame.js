@@ -3,6 +3,33 @@ const app = document.getElementById('app');
 window.pageCleanup = null;
 window.pageTimers = [];
 
+class cache{
+    constructor() {
+        this.data = {};
+    }
+
+    len() {
+        return Object.keys(this.data).length;
+    }
+
+    set(key, value) {
+        this.data[key] = value;
+    }
+
+    get(key) {
+        return this.data[key] || null;
+    }
+
+    remove(key) {
+        delete this.data[key];
+    }
+
+    clear() {
+        this.data = {};
+    }
+}
+
+
 function loadingElement() {
     /*
     <div class="text-center">
@@ -58,6 +85,8 @@ function initThemeToggle() {
     const themeToggle = document.getElementById('theme-toggle');
     const themeIcon = themeToggle?.querySelector('.theme-icon');
 
+    if(!themeToggle) return;
+
     const currentTheme = localStorage.getItem('theme') || 'dark';
 
     if (currentTheme === 'light') {
@@ -81,7 +110,7 @@ function initTheme() {
 }
 
 // 侧边栏加载完成后初始化主题
-document.addEventListener('menuLoaded', initThemeToggle);
+document.addEventListener('siderbarLoaded', initThemeToggle);
 function jumpTo(url, loadContainerId = 'app') {
     if (url.startsWith('/')) {
         if (url === '/') url = '/home';
@@ -91,13 +120,29 @@ function jumpTo(url, loadContainerId = 'app') {
     }
 }
 
+function superDictFromTemplate(template, dict) {
+    let result = dict;
+    for (const key in template) {
+        if (dict.hasOwnProperty(key)) {
+            if(typeof template[key] === 'object' && !Array.isArray(template[key]) && template[key] !== null) {
+                result[key] = superDictFromTemplate(template[key], dict[key]);
+            }
+            result[key] = dict[key];
+        } else {
+            result[key] = template[key];
+        }
+    }
+    return result;
+}
 
 
 /////////////
 
 const loading = loadingElement();
-let navHtml = ``;
-let menuHtml = ``;
+let navContent = {};
+let siderbarContent = {};
+
+templateCache = new cache();
 
 const defaultMethods = {
     toggleTheme: toggleTheme,
@@ -307,12 +352,12 @@ async function loadPage(loadContainerId = 'app', url=window.location.pathname) {
 
         const _data = renderHtml(data.page);
 
-        let config = _data.config;
-        config.nav = data?.config?.nav || {};
-        config.menu = data?.config?.menu || {};
+        let renderMap = _data.config;
+        renderMap.navbar = data?.config?.navbar || {};
+        renderMap.siderbar = data?.config?.siderbar || {};
 
         console.log('htmlScript:', _data.scripts);
-        console.log('rederConfig:', config);
+        console.log('rederConfig:', renderMap);
 
 
         if(loadContainerId === 'app') await clearOldPage(); // 等待清理完成！！！！！！
@@ -335,7 +380,7 @@ async function loadPage(loadContainerId = 'app', url=window.location.pathname) {
 
 
        
-        await loadNavigation(config);
+        await loadNavigation(renderMap);
         //
 
         renderPage(_data.html, data.config, methodsMap=methodsMap, loadContainerId);
@@ -496,19 +541,79 @@ function renderPage(pageHtml, config, methodsMap = {}, container='app') {
 
 async function loadNavigation(config={}) {
     try {
-        if(!navHtml){
-            const navResponse = await fetch('/api/navigation', { method: 'POST' });
-            const navData = await navResponse.json();
-            navHtml = navData.data.nav
-            menuHtml = navData.data.menu
+        
+
+
+
+        config.navbar = superDictFromTemplate({
+                display: true,
+                template: window.config.navbar.default,
+                renderContent: true
+        }, config.navbar || {});
+
+        config.siderbar = superDictFromTemplate({
+                display: true,
+                template: window.config.siderbar.default,
+                renderContent: false
+        }, config.siderbar || {});
+
+
+        console.log('config for navigation:', config);
+
+        
+
+        if(document.getElementById('navbar').children.length === 0 || document.getElementById('siderbar').children.length === 0) {
+            console.log('通过请求获取导航栏和侧边栏模板');
+            const resources = [
+                config.navbar?.display ? config.navbar?.template : null, 
+                config.siderbar?.display ? config.siderbar?.template : null
+            ].filter(item => item !== null && item !== undefined);
+
+            const fetchProm = [];
+
+            resources.forEach(template => {
+                if(!templateCache.get(template)){
+                    const p=fetch(`/api/template/${template}`, { method: 'POST' })
+                        .then(response => response.json())
+                        .then(data => {
+                            if(data.success) {
+                                templateCache.set(template, data.data);
+                            } else {
+                                console.error(`加载模板 ${template} 失败, 请检查资源是否存在:`, data.error);
+                            }
+                        })
+                        .catch(error => {
+                            console.error(`加载模板 ${template} 失败, 请检查资源是否存在:`, error);
+                        });
+                    fetchProm.push(p);
+                }
+            });
+
+            await Promise.all(fetchProm);
+
+
+            const { navbar, siderbar, ...renderMap } = config; // renderMap为config去除navbar和siderbar后的对象
+
+            document.getElementById('navbar').innerHTML = config.navbar?.renderContent ? renderTemplate(templateCache.get(config.navbar?.template), renderMap) : templateCache.get(config.navbar?.template);
+            document.getElementById('siderbar').innerHTML = config.siderbar?.renderContent ? renderTemplate(templateCache.get(config.siderbar?.template), renderMap) : templateCache.get(config.siderbar?.template);
         }
 
-        const { nav, menu, ...defaultConfig } = config; // defaultConfig为config去除nav和menu后的对象
+        console.log('cache', templateCache.data);
 
-        document.getElementById('nav').innerHTML = renderTemplate(navHtml, Object.assign(defaultConfig, config.nav || {}));
-        document.getElementById('menu').innerHTML = renderTemplate(menuHtml, Object.assign(defaultConfig, config.menu || {}));
+        document.getElementById('navbar').querySelector(`[page=${config?.navbar?.page}]`)?.classList.add('active');
+        document.getElementById('siderbar').querySelector(`[page=${config?.siderbar?.page}]`)?.classList.add('active');
 
-        document.dispatchEvent(new Event('menuLoaded'));
+        document.querySelectorAll('[page]')?.forEach(el => { 
+            el.addEventListener('click', (e) => {
+                document.querySelectorAll('[page]')?.forEach(ele => { 
+                    ele.classList.remove('active');
+                    document.getElementById('navbar').querySelector(`[page=${config?.navbar?.page}]`)?.classList.add('active');
+                    document.getElementById('siderbar').querySelector(`[page=${config?.siderbar?.page}]`)?.classList.add('active');
+                })
+            })
+        });
+
+        document.dispatchEvent(new Event('sidebarLoaded'));
     
     } catch (error) {
         console.error('加载导航栏失败:', error);
