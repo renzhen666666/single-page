@@ -90,6 +90,8 @@ python createPage.py /mypage "我的页面标题"
 - `{variable}` - 变量替换
 - `{condition}...{/condition}` - 条件渲染
 
+
+
 ### 主题切换
 
 框架支持暗色/亮色主题切换，用户偏好会保存在 localStorage 中。

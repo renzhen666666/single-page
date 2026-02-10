@@ -1,8 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
-
 // Configuration
 const PAGES_DIR = path.join(__dirname, 'pages');
 const TEMPLATES_DIR = path.join(__dirname, 'templates');

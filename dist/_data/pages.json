@@ -1,0 +1,88 @@
+{
+  "error\\404\\error_404": {
+    "html": "<h1>404 Not Found</h1>",
+    "config": {}
+  },
+  "error\\500\\error_500": {
+    "html": "<h1>500 Internal Server Error</h1>\r\n",
+    "config": {}
+  },
+  "home\\home": {
+    "html": "<div class=\"text-center\">\r\n    <h1>Single Page Frame</h1>\r\n    <p>一个简单的前端单页应用框架</p>\r\n    <a href=\"/home\">home</a>\r\n    <a href=\"/p1\">p1</a>\r\n    <a href=\"/p2\">p2</a>\r\n    <a href=\"/p3\">p3</a>\r\n    <a href=\"/test\">test</a>\r\n</div>\r\n\r\n",
+    "config": {
+      "title": "Home",
+      "navbar": {
+        "display": true,
+        "template": "nav.html",
+        "page": "home",
+        "renderContent": true
+      },
+      "siderbar": {
+        "display": true,
+        "template": "menu.html",
+        "page": "home"
+      }
+    }
+  },
+  "loading\\loading": {
+    "html": "<div class=\"text-center\">\r\n    <div class=\"spinner-border\" role=\"status\">\r\n        <span class=\"visually-hidden\">加载中...</span>\r\n    </div>\r\n</div>",
+    "config": {
+      "title": "loading"
+    }
+  },
+  "p1\\p1": {
+    "html": "<div class=\"text-center\">\r\n    <h1>P1</h1>\r\n    <a href=\"/home\">home</a>\r\n    <a href=\"/p1\">p1</a>\r\n    <a href=\"/p2\">p2</a>\r\n    <a href=\"/p3\">p3</a>\r\n</div>\r\n",
+    "config": {
+      "title": "Page 1",
+      "siderbar": {
+        "display": true,
+        "template": "menu.html",
+        "page": "p1"
+      }
+    }
+  },
+  "p2\\p2": {
+    "html": "<div class=\"text-center\">\r\n    <h1>P2</h1>\r\n    <a href=\"/home\">home</a>\r\n    <a href=\"/p1\">p1</a>\r\n    <a href=\"/p2\">p2</a>\r\n    <a href=\"/p3\">p3</a>\r\n</div>\r\n",
+    "config": {
+      "title": "Page 1",
+      "menu": {
+        "p1Active": "active"
+      }
+    }
+  },
+  "p3\\p3": {
+    "html": "<div class=\"text-center\">\r\n    <h1>P3</h1>\r\n    <a href=\"/home\">home</a>\r\n    <a href=\"/p1\">p1</a>\r\n    <a href=\"/p2\">p2</a>\r\n    <a href=\"/p3\">p3</a>\r\n</div>\r\n",
+    "config": {
+      "title": "Page 1",
+      "menu": {
+        "p1Active": "active"
+      }
+    }
+  },
+  "route\\route": {
+    "html": "<div class=\"text-center\">\r\n    query: {query}{/query}\r\n</div>",
+    "config": {
+      "title": "route"
+    }
+  },
+  "test\\card1\\test_card1": {
+    "html": "<p>card1</p>\r\n<a href=\"/test/card2\" data-load=\"derive\">card2</a>",
+    "config": {}
+  },
+  "test\\card2\\test_card2": {
+    "html": "<p>card2</p>\r\n<a href=\"/test/card1\" data-load=\"derive\">card1</a>",
+    "config": {}
+  },
+  "test\\test": {
+    "html": "<div class=\"text-center\">\r\n    <h1>Test Page</h1>\r\n    <a href=\"/home\">home</a>\r\n    <a href=\"/p1\">p1</a>\r\n    <a href=\"/p2\">p2</a>\r\n    <a href=\"/p3\">p3</a>\r\n    <div class=\"card\" >\r\n        <div class=\"card-header\">\r\n            <button data-on-click=\"btnClick\" data-click-params=\"[123456]\">测试</button>\r\n        </div>\r\n        <div class=\"card-body\">\r\n            <form>\r\n                <input type=\"text\" name=\"username\" placeholder=\"请输入用户名\"\r\n                 data-on-input=\"inputChange\" \r\n                 data-input-params='[\"event\", \"this\"]'>\r\n                <input type=\"password\" name=\"password\" placeholder=\"请输入密码\">\r\n                <button action=\"none\" type=\"submit\">登录</button>\r\n            </form>\r\n            \r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"card\" >\r\n    <div class=\"card-header\">\r\n        <button data-on-click=\"btnClick\" data-click-params=\"[123456]\">测试</button>\r\n    </div>\r\n    <div class=\"card-body\" id=\"test-card-container\" data-derive-container>\r\n        <a href=\"/test/card1\" data-load=\"derive\">card1</a>\r\n        <a href=\"/test/card2\" data-load=\"derive\">card2</a>\r\n    </div>\r\n</div>\r\n\r\n\r\n<script>\r\n    console.log(\"通过script标签加载\");\r\n</script>\r\n",
+    "config": {
+      "title": "Test Page",
+      "scripts": [
+        "test.js"
+      ],
+      "styles": [
+        "test.css"
+      ]
+    }
+  }
+}

@@ -1,0 +1,19 @@
+function btnClick(a) {
+    console.log("成功！！！！",a);
+}
+
+function inputChange(e, username){
+    console.log("输入框内容改变了");
+    console.log("event", e);
+    console.log("username", username);
+}
+
+export function init(){
+    console.log("/test init");
+
+}
+
+export const methods = {
+    btnClick: btnClick,
+    inputChange: inputChange
+}
