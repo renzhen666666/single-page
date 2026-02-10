@@ -54,8 +54,8 @@ function processPages() {
         const pageKey = path.join(basePath, urlSafe);
         const htmlContent = readFile(fullPath);
 
-        // Try to find corresponding JSON config
-        const jsonPath = path.join(path.dirname(fullPath), urlSafe.replace(/_/g, '/') + '.json');
+        // Try to find corresponding JSON config in the same directory
+        const jsonPath = path.join(path.dirname(fullPath), urlSafe + '.json');
         const jsonContent = readJson(jsonPath);
 
         pagesData[pageKey] = {

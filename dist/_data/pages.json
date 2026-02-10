@@ -67,11 +67,27 @@
   },
   "test\\card1\\test_card1": {
     "html": "<p>card1</p>\r\n<a href=\"/test/card2\" data-load=\"derive\">card2</a>",
-    "config": {}
+    "config": {
+      "title": "card",
+      "loadData": {
+        "method": "derive",
+        "deriveContainer": "test-card-container",
+        "super": "/test",
+        "loadSuper": false
+      }
+    }
   },
   "test\\card2\\test_card2": {
     "html": "<p>card2</p>\r\n<a href=\"/test/card1\" data-load=\"derive\">card1</a>",
-    "config": {}
+    "config": {
+      "title": "card",
+      "loadData": {
+        "method": "derive",
+        "deriveContainer": "test-card-container",
+        "super": "/test",
+        "loadSuper": false
+      }
+    }
   },
   "test\\test": {
     "html": "<div class=\"text-center\">\r\n    <h1>Test Page</h1>\r\n    <a href=\"/home\">home</a>\r\n    <a href=\"/p1\">p1</a>\r\n    <a href=\"/p2\">p2</a>\r\n    <a href=\"/p3\">p3</a>\r\n    <div class=\"card\" >\r\n        <div class=\"card-header\">\r\n            <button data-on-click=\"btnClick\" data-click-params=\"[123456]\">测试</button>\r\n        </div>\r\n        <div class=\"card-body\">\r\n            <form>\r\n                <input type=\"text\" name=\"username\" placeholder=\"请输入用户名\"\r\n                 data-on-input=\"inputChange\" \r\n                 data-input-params='[\"event\", \"this\"]'>\r\n                <input type=\"password\" name=\"password\" placeholder=\"请输入密码\">\r\n                <button action=\"none\" type=\"submit\">登录</button>\r\n            </form>\r\n            \r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"card\" >\r\n    <div class=\"card-header\">\r\n        <button data-on-click=\"btnClick\" data-click-params=\"[123456]\">测试</button>\r\n    </div>\r\n    <div class=\"card-body\" id=\"test-card-container\" data-derive-container>\r\n        <a href=\"/test/card1\" data-load=\"derive\">card1</a>\r\n        <a href=\"/test/card2\" data-load=\"derive\">card2</a>\r\n    </div>\r\n</div>\r\n\r\n\r\n<script>\r\n    console.log(\"通过script标签加载\");\r\n</script>\r\n",
