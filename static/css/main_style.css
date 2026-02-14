@@ -335,6 +335,7 @@ label {
     font-weight: 600 !important;
 }
 
+/* 侧边栏菜单样式 */
 .sidebar-menu {
     padding: 1rem 0 !important;
 }
@@ -381,7 +382,6 @@ label {
     color: white !important;
 }
 
-/* 按钮样式调整 */
 #sidebarToggle {
     background: transparent !important;
     border: none !important;
@@ -398,14 +398,51 @@ label {
     transform: rotate(0deg) !important;
     transition: transform 0.6s ease !important;
 }
+/* 侧边栏样式结束 */
 
-.spinner-border {
-    border: 0.25em solid var(--primary-color) !important;
-    border-right-color: transparent !important;
-    border-top-color: transparent !important;
+/* 加载动画 */
+
+.loader-container {
+    height: 200px;
+    background-color: transparent;
+    border-radius: 8px;
 }
 
-.visually-hidden {
-    border: 0 !important;
+.circular-loader {
+    width: 50px;
+    height: 50px;
+    animation: rotate 2s linear infinite;
 }
 
+.loader-path {
+    fill: none;
+    stroke-width: 4px;
+    stroke-linecap: round; 
+    stroke: var(--primary-color); 
+    animation: dash 1.5s ease-in-out infinite;
+}
+
+/* 1. 整体旋转动画 */
+@keyframes rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* 2. 线条长度伸缩与位移动画 (核心逻辑) */
+@keyframes dash {
+    0% {
+        stroke-dasharray: 1, 200; /* 初始状态：很短的线 */
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 89, 200; /* 中间状态：线条变长 */
+        stroke-dashoffset: -35; /* 线条开始移动 */
+    }
+    100% {
+        stroke-dasharray: 89, 200; /* 保持长度 */
+        stroke-dashoffset: -124; /* 继续移动，造成"尾巴收缩"的错觉 */
+    }
+}
+
+/* 加载动画结束 */

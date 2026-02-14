@@ -1,9 +1,7 @@
 <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="sidebarLabel">
-            <button id="theme-toggle" class="theme-toggle btn btn-outline-light" data-on-click="toggleTheme">
-                <span class="theme-icon">🌙</span>
-            </button>
+            <template include="components/themeToggle.html"></template>
         </h5>
         <button type="button" class="btn-menu-close" data-bs-dismiss="offcanvas" aria-label="Close" style="background-color: transparent;" siderbar-toggle>
             <img src="/img/menu-fold.png" alt="关闭菜单" style="width:30px; height:30px; filter: invert(1);"></button>
@@ -18,9 +16,9 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="/p1" class="nav-link sidebar-link" page="p1">
+                    <a href="/test" class="nav-link sidebar-link" page="test">
                         <i class="bi bi-chat-square-text me-3"></i>
-                        <span>p1</span>
+                        <span>测试</span>
                     </a>
                 </li>
             </ul>

@@ -1,4 +1,4 @@
-{
+export default {
     "title": "card",
     "loadData": {
         "method": "derive",

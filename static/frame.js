@@ -30,30 +30,116 @@ class cache{
 }
 
 
+class RouteParser {
+    constructor(routes) {
+        // 预编译路由配置
+        this.compiledRoutes = routes.map(route => this.compileRoute(route));
+    }
+
+    // 🔥 将 "/route/:q<int>" 转换为正则和提取函数
+    compileRoute(routeConfig) {
+        const { path: routePath, template, function: funcConfig } = routeConfig;
+        // 1. 提取参数定义 (name, type)
+        const paramDefs = [];
+        const regexPattern = routePath.replace(
+            /:(\w+)(?:<(\w+)>)*\/?/g, // 匹配 :name<type> 或 :name/
+            (match, paramName, paramType = 'string') => {
+                paramDefs.push({ name: paramName, type: paramType });
+                // 根据类型生成不同的正则捕获组
+                const typeRegex = this.getTypeRegex(paramType);
+                return `(${typeRegex})`;
+        }
+        ).replace(/\//g, '\\/'); // 转义路径分隔符
+
+        // 2. 创建正则表达式
+        const regex = new RegExp(`^${regexPattern}$`);
+
+        // 3. 返回编译后的路由对象
+        return {
+            regex,
+            template,
+            function: funcConfig,
+            paramDefs,
+            extractParams: (match) => {
+                const params = {};
+                for (let i = 0; i < paramDefs.length; i++) {
+                const { name, type } = paramDefs[i];
+                let value = match[i + 1];
+                // 4. 类型转换
+                params[name] = this.convertParam(value, type);
+                }
+                return params;
+            }
+        };
+    }
+
+    getTypeRegex(type) {
+        switch (type) {
+        case 'int':
+            return '\\d+'; // 只匹配数字
+        case 'float':
+            return '\\d+\\.\\d+'; // 简单的浮点数匹配
+        case 'string':
+            return '[^\\/]+?'; // 匹配非斜杠字符
+        default:
+            return '[^\\/]+?'; // 匹配非斜杠字符
+        }
+    }
+
+    convertParam(value, type) {
+        switch (type) {
+        case 'int':
+            return parseInt(value, 10);
+        case 'float':
+            return parseFloat(value);
+        case 'string':
+        default:
+            return value;
+        }
+    }
+
+    // 🔥 主匹配函数
+    match(path) {
+        for (const route of this.compiledRoutes) {
+            const match = path.match(route.regex);
+            if (match) {
+                return {
+                    template: route.template,
+                    function: route.function,
+                    params: route.extractParams(match)
+                };
+            }
+        }
+        return null; // 未找到匹配
+    }
+}
+
 function loadingElement() {
     /*
-    <div class="text-center">
-        <div class="spinner-border" role="status">
-            <span class="visually-hidden">加载中...</span>
-        </div>
+    <div class="loader-container d-flex justify-content-center align-items-center shadow-sm">
+        <svg class="circular-loader" viewBox="25 25 50 50">
+            <circle class="loader-path" cx="50" cy="50" r="20"></circle>
+        </svg>
     </div>
     */
 
 
     const loadingElement = document.createElement('div');
-    loadingElement.className = 'text-center';
-    const ldinner = document.createElement('div');
+    loadingElement.className = 'loader-container d-flex justify-content-center align-items-center shadow-sm';
 
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'circular-loader');
+    svg.setAttribute('viewBox', '25 25 50 50');
 
-    ldinner.className = 'spinner-border';
-    ldinner.setAttribute('role', 'status');
-    const srOnly = document.createElement('span');
-    srOnly.className = 'visually-hidden';
-    srOnly.textContent = '加载中...';
-    ldinner.appendChild(srOnly);
+    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute('class', 'loader-path');
+    circle.setAttribute('cx', '50');
+    circle.setAttribute('cy', '50');
+    circle.setAttribute('r', '20');
 
-    
-    loadingElement.appendChild(ldinner);
+    svg.appendChild(circle);
+    loadingElement.appendChild(svg);
+
 
     return loadingElement.outerHTML;
 }
@@ -141,6 +227,8 @@ let navContent = {};
 let siderbarContent = {};
 
 templateCache = new cache();
+
+const router = new RouteParser(window.config.routes);
 
 const defaultMethods = {
     toggleTheme: toggleTheme,
@@ -287,112 +375,144 @@ async function loadPage(loadContainerId = 'app', url=window.location.pathname) {
     }
 
 
-    const path = window.location.pathname;
+    const path = window.location.pathname.startsWith('/') ? window.location.pathname : `/${window.location.pathname}`;
     container.innerHTML = loading;
 
 
-    try {
+    //
 
+    const matchedRoute = router.match(path); 
 
-        const response = await fetch(`/api/pages${path}`, { method: 'POST' });
-        const data = await processResponse(response);
+    let pageRenderMap={}, requestUrl=path;
 
-        console.log(`${path} data:`, data);
-
-        switch (data?.config?.loadData?.method) {
-            case 'derive':
-                const superU = data.config.loadData.super;
-                if(oldPath.startsWith(superU) && oldPath !== path) {
-                    break;
-                }/* else if(data.config.loadData.loadSuper) {
-                    await loadPage(loadContainerId, superU);
-                    break;
-                } */else{
-                    await loadPage('app', superU);
-                    await loadPage(data.config.loadData.deriveContainer, path);
-                    return;
-                }
+    if(matchedRoute) {
+        requestUrl = matchedRoute.template.path;
+        Object.entries(matchedRoute.template?.params)?.forEach(([key, value]) => {
+            pageRenderMap[key] = matchedRoute.params[value];
+        });
+    }
+    const dataP = fetch(`/api/pages${requestUrl}`, { method: 'POST' }).then(async res =>  {
+        return await processResponse(res);
+    });
 
 
 
-
-                break;
-            default:
-                break;
+    const pageConfigP = import(`/api/pages${requestUrl}.js`).then((pageModule) => {
+        return pageModule.default;
+    }).then(pageConfig => {
+        return {success: true, data: pageConfig};
+    }).catch((error) => {
+        console.error('加载页面配置失败:', error);
+        return {sucess: false};
+    });
+    
+    const [pageData, pageConfig] = await Promise.all([dataP, pageConfigP]).then(([data, pageConfig]) => {
+        if(!data.success) {
+            console.error('加载页面数据失败:', data);
+            return [data.data, {}];
+        }else if(!pageConfig.success) {
+            console.error('加载页面配置失败:', pageConfig);
+            return [data.data, {}];
         }
-
+        return [data.data, pageConfig.data];
+    });
     
 
-        var methodsMap = defaultMethods;
-        
-        
-        let initFuncLst = [];
-
-        if (data?.config?.scripts) {
-            // 等待所有异步加载完成 ！！！！！
-            const methodsPromises = data.config.scripts.map(scriptSrc => loadScriptFromSrc(scriptSrc));
-
-            const results = await Promise.all(methodsPromises);
-            const methodsArray = results.map(r => r.methods);
-            initFuncLst = results.flatMap(r => r.initFuncLst);
-
-            methodsArray.forEach(_methods => {
-                Object.assign(methodsMap, _methods);
-            });
-        }
-
-        if(data?.config?.styles) {
-            const stylesPromises = data.config.styles.map(cssFilename => loadStylesFromHref(`/css/${cssFilename}`));
-            await Promise.all(stylesPromises);
-        }
-
-        const _data = renderHtml(data.page);
-
-        let renderMap = _data.config;
-        renderMap.navbar = data?.config?.navbar || {};
-        renderMap.siderbar = data?.config?.siderbar || {};
-
-        console.log('htmlScript:', _data.scripts);
-        console.log('rederConfig:', renderMap);
+    console.log(`${path} requestData:`, {
+        data: pageData,
+        pageConfig: pageConfig
+    });
+    
 
 
-        if(loadContainerId === 'app') await clearOldPage(); // 等待清理完成！！！！！！
-
-
-        if(_data.scripts) {
-            _data.scripts.forEach(script => loadScript(script));
-        }
-
-        if(_data.styles) {
-            _data.styles.forEach(style => loadStyles(style));
-        }
-
-
-
-        //console.log('methodsMap:', methodsMap);
-
-
-        //
-
-
-       
-        await loadNavigation(renderMap);
-        //
-
-        renderPage(_data.html, data.config, methodsMap=methodsMap, loadContainerId);
-
-        window.dispatchEvent(new Event('pageLoaded'));
-
-        initFuncLst?.forEach(initFunc => initFunc());
-    } catch (error) {
-        
-        console.error('加载页面失败:', error);
+    switch (pageConfig?.loadData?.method) {
+        case 'derive':
+            const superU = pageConfig.loadData.super;
+            if(oldPath.startsWith(superU) && oldPath !== path) {
+                break;
+            }/* else if(pageConfig.loadData.loadSuper) {
+                await loadPage(loadContainerId, superU);
+                break;
+            } */else{
+                await loadPage('app', superU);
+                await loadPage(pageConfig.loadData.deriveContainer, path);
+                return;
+            }
+        default:
+            break;
     }
+
+
+
+    var methodsMap = defaultMethods;
+    
+    
+    let initFuncLst = [];
+
+    if (pageConfig?.scripts) {
+        // 等待所有异步加载完成 ！！！！！
+        const methodsPromises = pageConfig.scripts.map(scriptSrc => loadScriptFromSrc(scriptSrc));
+
+        const results = await Promise.all(methodsPromises);
+        const methodsArray = results.map(r => r.methods);
+        initFuncLst = results.flatMap(r => r.initFuncLst);
+
+        methodsArray.forEach(_methods => {
+            Object.assign(methodsMap, _methods);
+        });
+    }
+
+    if(pageConfig?.styles) {
+        const stylesPromises = pageConfig.styles.map(cssFilename => loadStylesFromHref(`/css/${cssFilename}`));
+        await Promise.all(stylesPromises);
+    }0
+
+    const _data = renderHtml(pageData.page);
+
+    let templateRenderMap = _data.templateRenderMap;
+    templateRenderMap.navbar = pageConfig?.navbar || {};
+    templateRenderMap.siderbar = pageConfig?.siderbar || {};
+
+    console.log('htmlScript:', _data.scripts);
+    console.log('templateRenderMap:', templateRenderMap);
+
+
+    if(loadContainerId === 'app') await clearOldPage(); // 等待清理完成！！！！！！
+
+
+    if(_data.scripts) {
+        _data.scripts.forEach(script => loadScript(script));
+    }
+
+    if(_data.styles) {
+        _data.styles.forEach(style => loadStyles(style));
+    }
+
+
+
+    //console.log('methodsMap:', methodsMap);
+
+
+    //
+
+
+    
+    await loadNavigation(templateRenderMap);
+    //
+
+    renderPage(_data.html, pageConfig, pageRenderMap, methodsMap=methodsMap, loadContainerId);
+
+    window.dispatchEvent(new Event('pageLoaded'));
+
+    initFuncLst?.forEach(initFunc => initFunc());
+
 
 }
 
 function renderHtml(html) {
-    let config = {};
+
+
+    let templateRenderMap = {};
     const scripts = [...html.matchAll(/<script>(.*?)<\/script>/gs)].map(scriptMatch => scriptMatch[1].replace(/\n/g, ''))
 
     const styles = [...html.matchAll(/<style>(.*?)<\/style>/gs)].map(styleMatch => styleMatch[1]);
@@ -405,7 +525,7 @@ function renderHtml(html) {
     configs.forEach(configMatch => {
         const configName = configMatch[1];
         const configContent = configMatch[2];
-        config[configName] = configContent;
+        templateRenderMap[configName] = configContent;
     });
     
     const _json = html.match(/\{json\}(.*?)\{\/json\}/s);
@@ -414,7 +534,7 @@ function renderHtml(html) {
     _json?.forEach(jsonMatch => {
         try {
             const json = JSON.parse(jsonMatch[1]);
-            Object.assign(config, json);
+            Object.assign(templateRenderMap, json);
         } catch (error) {
             console.error('JSON 解析错误:', error);
         }
@@ -423,7 +543,7 @@ function renderHtml(html) {
 
     return {
         html: html,
-        config: config,
+        templateRenderMap: templateRenderMap,
         scripts: scripts,
         styles: styles
     };
@@ -431,14 +551,27 @@ function renderHtml(html) {
 
 
 //来自qianwen
-function renderPage(pageHtml, config, methodsMap = {}, container='app') {
+function renderPage(pageHtml, config, pageRenderMap = {}, methodsMap = {}, container='app') {
     const containerElement = document.getElementById(container);
     if(!containerElement) {
         console.error(`容器 ${container} 不存在`);
         return;
     }
+
+    const matches = [...pageHtml.matchAll(/{{(.*?)}}/gs)];
+    matches.forEach(element => {
+        const [_, paramName] = element;
+        //if(paramName in pageRenderMap) 
+        pageHtml = pageHtml.replace(element[0], pageRenderMap[paramName]);
+        
+    });
+
+
     containerElement.innerHTML = pageHtml;
     if (config?.title) document.title = config.title;
+
+
+    
 
     document.querySelectorAll('*').forEach(element => {
         Array.from(element.attributes).forEach(attr => {
@@ -622,6 +755,31 @@ function renderTemplate(content, data = {}) {
         // 如果数据中存在该键且值为真，则返回内部内容，否则返回空字符串
         return data[key] ? innerContent : '';
     });
+
+    components = content.match(/<template\s+include="([^"]*)"[^>]*><\/template>/gs) || [];
+    let comMap = {}, comPos=[];
+    components.forEach(component => {
+        const componentName = component[1];
+        comPos.push(fetch(`/api/template/${componentName}`, {method: 'POST'}
+            ).then(response => response.json()
+            ).then(res => {
+                if(res.success) {
+                    comMap[componentName] = res.data;
+                } else {
+                    console.error(`加载组件 ${componentName} 失败, 请检查资源是否存在:`, json.error);
+                }
+            }).catch(error => {
+                console.error(`加载组件 ${componentName} 失败, 请检查资源是否存在:`, error);
+            })
+        );
+    });
+
+    Promise.all(comPos).then(() => {
+        comMap.forEach((component, componentName) => {
+            content = content.replace(new RegExp(`<template\\s+include="${componentName}"[^>]*><\\/template>`, 'gs'), component);
+        })
+
+    })
     
     // 处理简单变量替换，如 {title}
     content = content.replace(/\{([^}]+)\}/g, (match, key) => {
@@ -636,26 +794,47 @@ function renderTemplate(content, data = {}) {
     if (!data.success) {
         console.warn('API返回错误:', data.error || '未知错误');
         if (data.data?.page) {
-            return {'page': data.data.page}
+            return { success: false, error: data.error||response.status, data: { 'page': data.data.page } };
         } else {
             switch (response.status) {
                 case 404:
-                    return {'page': `<div class="alert alert-danger" role="alert">404 页面不存在</div>`}
+                    return {
+                        sucesss: false,
+                        error: 404,
+                        data:{ 
+                            'page': `<div class="alert alert-danger" role="alert">404 页面不存在</div>`
+                        }
+                    }
                 case 500:
-                        return {'page': `<div class="alert alert-danger" role="alert">500 服务器错误</div>`}
+                    return {
+                        sucesss: false,
+                        error: 500,
+                        data:{ 
+                            'page': `<div class="alert alert-danger" role="alert">500 服务器错误</div>`
+                        }
+                    }
                 case 401:
-                    return {'page': `<div class="alert alert-danger" role="alert">401 未授权</div>`}
+                    return {
+                        sucesss: false,
+                        error: 401,
+                        data:{ 
+                            'page': `<div class="alert alert-danger" role="alert">401 未授权</div>`
+                        }
+                    }
 
 
                 default:
-                    return {'page': `<div class="alert alert-danger" role="alert">${data.error || '我们也不知道出了什么问题，你就先受着吧(doge)'}</div>`}
-            }
-
-
-            
+                    return {
+                        sucesss: false,
+                        error: response.status,
+                        data:{
+                            'page': `<div class="alert alert-danger" role="alert">${data.error || '我们也不知道出了什么问题，你就先受着吧(doge)'}</div>`
+                        }
+                    };
+                }
         }
     }
-    return data.data;
+    return {success: true, data: data.data};
 };
 
 

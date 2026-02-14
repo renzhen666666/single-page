@@ -1,4 +1,4 @@
-{
+export default {
     "title": "Home",
     "navbar": {
         "display": true,

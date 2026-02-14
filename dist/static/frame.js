@@ -30,6 +30,90 @@ class cache{
 }
 
 
+class RouteParser {
+    constructor(routes) {
+        // 预编译路由配置
+        this.compiledRoutes = routes.map(route => this.compileRoute(route));
+    }
+
+    // 🔥 将 "/route/:q<int>" 转换为正则和提取函数
+    compileRoute(routeConfig) {
+        const { path: routePath, template, function: funcConfig } = routeConfig;
+        // 1. 提取参数定义 (name, type)
+        const paramDefs = [];
+        const regexPattern = routePath.replace(
+            /:(\w+)(?:<(\w+)>)*\/?/g, // 匹配 :name<type> 或 :name/
+            (match, paramName, paramType = 'string') => {
+                paramDefs.push({ name: paramName, type: paramType });
+                // 根据类型生成不同的正则捕获组
+                const typeRegex = this.getTypeRegex(paramType);
+                return `(${typeRegex})`;
+        }
+        ).replace(/\//g, '\\/'); // 转义路径分隔符
+
+        // 2. 创建正则表达式
+        const regex = new RegExp(`^${regexPattern}$`);
+
+        // 3. 返回编译后的路由对象
+        return {
+            regex,
+            template,
+            function: funcConfig,
+            paramDefs,
+            extractParams: (match) => {
+                const params = {};
+                for (let i = 0; i < paramDefs.length; i++) {
+                const { name, type } = paramDefs[i];
+                let value = match[i + 1];
+                // 4. 类型转换
+                params[name] = this.convertParam(value, type);
+                }
+                return params;
+            }
+        };
+    }
+
+    getTypeRegex(type) {
+        switch (type) {
+        case 'int':
+            return '\\d+'; // 只匹配数字
+        case 'float':
+            return '\\d+\\.\\d+'; // 简单的浮点数匹配
+        case 'string':
+            return '[^\\/]+?'; // 匹配非斜杠字符
+        default:
+            return '[^\\/]+?'; // 匹配非斜杠字符
+        }
+    }
+
+    convertParam(value, type) {
+        switch (type) {
+        case 'int':
+            return parseInt(value, 10);
+        case 'float':
+            return parseFloat(value);
+        case 'string':
+        default:
+            return value;
+        }
+    }
+
+    // 🔥 主匹配函数
+    match(path) {
+        for (const route of this.compiledRoutes) {
+            const match = path.match(route.regex);
+            if (match) {
+                return {
+                    template: route.template,
+                    function: route.function,
+                    params: route.extractParams(match)
+                };
+            }
+        }
+        return null; // 未找到匹配
+    }
+}
+
 function loadingElement() {
     /*
     <div class="text-center">
@@ -141,6 +225,8 @@ let navContent = {};
 let siderbarContent = {};
 
 templateCache = new cache();
+
+const router = new RouteParser(window.config.routes);
 
 const defaultMethods = {
     toggleTheme: toggleTheme,
@@ -287,14 +373,22 @@ async function loadPage(loadContainerId = 'app', url=window.location.pathname) {
     }
 
 
-    const path = window.location.pathname;
+    const path = window.location.pathname.startsWith('/') ? window.location.pathname : `/${window.location.pathname}`;
     container.innerHTML = loading;
 
 
     try {
+        const matchedRoute = router.match(path); 
 
+        let pageRenderMap={}, requestUrl=path;
 
-        const response = await fetch(`/api/pages${path}`, { method: 'POST' });
+        if(matchedRoute) {
+            requestUrl = matchedRoute.template.path;
+            Object.entries(matchedRoute.template?.params)?.forEach(([key, value]) => {
+                pageRenderMap[key] = matchedRoute.params[value];
+            });
+        }
+        const response = await fetch(`/api/pages${requestUrl}`, { method: 'POST' });
         const data = await processResponse(response);
 
         console.log(`${path} data:`, data);
@@ -348,12 +442,12 @@ async function loadPage(loadContainerId = 'app', url=window.location.pathname) {
 
         const _data = renderHtml(data.page);
 
-        let renderMap = _data.config;
-        renderMap.navbar = data?.config?.navbar || {};
-        renderMap.siderbar = data?.config?.siderbar || {};
+        let templateRenderMap = _data.templateRenderMap;
+        templateRenderMap.navbar = data?.config?.navbar || {};
+        templateRenderMap.siderbar = data?.config?.siderbar || {};
 
         console.log('htmlScript:', _data.scripts);
-        console.log('rederConfig:', renderMap);
+        console.log('templateRenderMap:', templateRenderMap);
 
 
         if(loadContainerId === 'app') await clearOldPage(); // 等待清理完成！！！！！！
@@ -376,10 +470,10 @@ async function loadPage(loadContainerId = 'app', url=window.location.pathname) {
 
 
        
-        await loadNavigation(renderMap);
+        await loadNavigation(renverMap);
         //
 
-        renderPage(_data.html, data.config, methodsMap=methodsMap, loadContainerId);
+        renderPage(_data.html, data.config, methodsMap=methodsMap, templateRenderMap, loadContainerId);
 
         window.dispatchEvent(new Event('pageLoaded'));
 
@@ -391,8 +485,10 @@ async function loadPage(loadContainerId = 'app', url=window.location.pathname) {
 
 }
 
-function renderHtml(html) {
-    let config = {};
+function renderHtml(html, pageRenderMap = {}) {
+
+
+    let templateRenderMap = {};
     const scripts = [...html.matchAll(/<script>(.*?)<\/script>/gs)].map(scriptMatch => scriptMatch[1].replace(/\n/g, ''))
 
     const styles = [...html.matchAll(/<style>(.*?)<\/style>/gs)].map(styleMatch => styleMatch[1]);
@@ -405,7 +501,7 @@ function renderHtml(html) {
     configs.forEach(configMatch => {
         const configName = configMatch[1];
         const configContent = configMatch[2];
-        config[configName] = configContent;
+        templateRenderMap[configName] = configContent;
     });
     
     const _json = html.match(/\{json\}(.*?)\{\/json\}/s);
@@ -414,7 +510,7 @@ function renderHtml(html) {
     _json?.forEach(jsonMatch => {
         try {
             const json = JSON.parse(jsonMatch[1]);
-            Object.assign(config, json);
+            Object.assign(templateRenderMap, json);
         } catch (error) {
             console.error('JSON 解析错误:', error);
         }
@@ -423,7 +519,7 @@ function renderHtml(html) {
 
     return {
         html: html,
-        config: config,
+        templateRenderMap: templateRenderMap,
         scripts: scripts,
         styles: styles
     };
@@ -431,14 +527,35 @@ function renderHtml(html) {
 
 
 //来自qianwen
-function renderPage(pageHtml, config, methodsMap = {}, container='app') {
+function renderPage(pageHtml, config, pageRenderMap = {}, methodsMap = {}, container='app') {
     const containerElement = document.getElementById(container);
     if(!containerElement) {
         console.error(`容器 ${container} 不存在`);
         return;
     }
+
+    const matches = [...pageHtml.matchAll(/\{(\w+)\}(.*?)\{\/\1\}/gs)];
+    matches.forEach(element => {
+        const [_, paramName, paramValue] = element;
+        if(paramName in pageParamsMap) {
+            if(countOccurrences(html, element[0]) > 1) {
+                if(logger) logger(`页面参数 ${paramName} 重复`);
+                return pageHtml;
+            } else {
+                
+            }
+            pageHtml = pageHtml.replace(element[0], pageRenderMap[paramName]);
+        } else {
+            pageHtml = pageHtml.replace(element[0], paramValue);
+        }
+    });
+
+
     containerElement.innerHTML = pageHtml;
     if (config?.title) document.title = config.title;
+
+
+    
 
     document.querySelectorAll('*').forEach(element => {
         Array.from(element.attributes).forEach(attr => {
